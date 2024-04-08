@@ -13,35 +13,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Senha {
-  id_senha              Int       @id @default(autoincrement())
-  tipoSenha             String
-  dataHoraEmissao       DateTime?
-  dataHoraAtendimento   DateTime?
-  statusAtendimento     String
-  guiche                Guiche?    @relation("guicheSenhas", fields: [guicheId], references: [id])
-  guicheId              Int?
+enum Status {
+  NA_FILA
+  EM_ANDAMENTO
+  ATENDIDO
 }
 
+enum tipoSenha {
+  SG
+  SP
+  SE
+}
+
+model Senha {
+  id                  Int        @id @default(autoincrement())
+  tipoSenha           tipoSenha
+  dataHoraEmissao     DateTime   @db.DateTime(3)
+  dataHoraAtendimento DateTime?  @db.DateTime(3)
+  statusAtendimento   Status     @default(NA_FILA)
+  guiche              Guiche?    @relation("guicheSenhas", fields: [guicheId], references: [id])
+  guicheId            Int?
+  Relatorio           Relatorio? @relation(fields: [relatorioId], references: [id])
+  relatorioId         Int?
+  Painel              Painel?    @relation(fields: [painelId], references: [id])
+  painelId            Int?
+}
+
+model Painel {
+  id    Int     @id @default(autoincrement())
+  dia   Int
+  mes   Int
+  ano   Int     @db.Year
+  senha Senha[]
+}
 
 model Relatorio {
-  id                        Int       @id @default(autoincrement())
-  dataRelatorio             DateTime
-  qtdSenhasEmitidas         Int
-  qtdSenhasAtendidas        Int
-  qtdSenhasEmitidasSP       Int
-  qtdSenhasAtendidasSP      Int
-  qtdSenhasEmitidasSG       Int
-  qtdSenhasAtendidasSG      Int
-  qtdSenhasEmitidasSE       Int
-  qtdSenhasAtendidasSE      Int
-  tempoMedioAtendimentoSP   Int
-  tempoMedioAtendimentoSG   Int
-  tempoMedioAtendimentoSE   Int
+  id                      Int      @id @default(autoincrement())
+  dataRelatorio           DateTime @db.DateTime(3)
+  senhas                  Senha[]
+  tempoMedioAtendimentoSP DateTime @db.Time(3)
+  tempoMedioAtendimentoSG DateTime @db.Time(3)
+  tempoMedioAtendimentoSE DateTime @db.Time(3)
 }
 
 model Guiche {
-  id                    Int       @id @default(autoincrement())
+  id                    Int     @id @default(autoincrement())
   statusDisponibilidade String
-  senhas                Senha[]   @relation("guicheSenhas")
+  senhasAtendidas       Senha[] @relation("guicheSenhas")
 }
