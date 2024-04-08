@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Senha {
+  id_senha              Int       @id @default(autoincrement())
+  tipoSenha             String
+  dataHoraEmissao       DateTime?
+  dataHoraAtendimento   DateTime?
+  statusAtendimento     String
+  guiche                Guiche?    @relation("guicheSenhas", fields: [guicheId], references: [id])
+  guicheId              Int?
+}
+
+
+model Relatorio {
+  id                        Int       @id @default(autoincrement())
+  dataRelatorio             DateTime
+  qtdSenhasEmitidas         Int
+  qtdSenhasAtendidas        Int
+  qtdSenhasEmitidasSP       Int
+  qtdSenhasAtendidasSP      Int
+  qtdSenhasEmitidasSG       Int
+  qtdSenhasAtendidasSG      Int
+  qtdSenhasEmitidasSE       Int
+  qtdSenhasAtendidasSE      Int
+  tempoMedioAtendimentoSP   Int
+  tempoMedioAtendimentoSG   Int
+  tempoMedioAtendimentoSE   Int
+}
+
+model Guiche {
+  id                    Int       @id @default(autoincrement())
+  statusDisponibilidade String
+  senhas                Senha[]   @relation("guicheSenhas")
+}

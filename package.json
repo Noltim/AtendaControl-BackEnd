@@ -1,0 +1,32 @@
+{
+  "name": "atendacontrol-backend",
+  "version": "1.0.0",
+  "description": "Sistema para controle de fila",
+  "main": "server.ts",
+  "scripts": {
+    "start": "ts-node-dev --respawn --transpile-only src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noltim/AtendaControl-BackEnd.git"
+  },
+  "author": "JaDiLuMi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Noltim/AtendaControl-BackEnd/issues"
+  },
+  "homepage": "https://github.com/Noltim/AtendaControl-BackEnd#readme",
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.5",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "prisma": "^5.12.1"
+  }
+}
