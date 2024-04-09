@@ -19,7 +19,7 @@ enum Status {
   ATENDIDO
 }
 
-enum tipoSenha {
+enum TipoSenha {
   SG
   SP
   SE
@@ -27,7 +27,7 @@ enum tipoSenha {
 
 model Senha {
   id                  Int        @id @default(autoincrement())
-  tipoSenha           tipoSenha
+  tipoSenha           TipoSenha
   dataHoraEmissao     DateTime   @db.DateTime(3)
   dataHoraAtendimento DateTime?  @db.DateTime(3)
   statusAtendimento   Status     @default(NA_FILA)
@@ -35,16 +35,17 @@ model Senha {
   guicheId            Int?
   Relatorio           Relatorio? @relation(fields: [relatorioId], references: [id])
   relatorioId         Int?
-  Painel              Painel?    @relation(fields: [painelId], references: [id])
-  painelId            Int?
+  Painel              Painel[]
 }
 
 model Painel {
-  id    Int     @id @default(autoincrement())
-  dia   Int
-  mes   Int
-  ano   Int     @db.Year
-  senha Senha[]
+  id          Int       @id @default(autoincrement())
+  dia         Int
+  mes         Int
+  ano         Int       @db.Year
+  preferencia TipoSenha
+  senhaId     Int
+  senha       Senha     @relation(fields: [senhaId], references: [id])
 }
 
 model Relatorio {

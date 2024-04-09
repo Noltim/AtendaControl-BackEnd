@@ -1,14 +1,11 @@
-import {Guiche, Status, tipoSenha} from "@prisma/client";
+import {Guiche, Status, TipoSenha} from "@prisma/client";
 
 export default interface senhasDTO {
     id?: number
-    tipoSenhaRecebida?: tipoSenha
+    tipoSenha?: string
     dataHoraEmissao?: Date
     dataHoraAtendimento?: Date
     statusAtendimento?: Status
     guiche?: Guiche
 }
 
-export default interface payloadPainel {
-    
-}

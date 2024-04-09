@@ -9,5 +9,12 @@ export default class senhasController {
         return res.status(201).json(senhaCriada);
     }
 
-    
+    async senhasNaoAtendidas(req: Request, res: Response) {
+        return res.status(200).json(await new senhasService().pegarSenhas(false));
+    }
+
+    async senhasAtendidas(req: Request, res: Response) {
+        return res.status(200).json(await new senhasService().pegarSenhas(true));
+    }
+
 }
